@@ -1,0 +1,43 @@
+version: '3.0'
+
+x-common-env: &common-env
+  QUESTION_ENDPOINT: http://question:1234
+  ANSWER_ENDPOINT: http://answer:5678
+
+services:
+
+  frontend:
+    build: ./frontend
+    image: deep-thought/frontend
+    container_name: frontend
+    environment:
+      <<: *common-env
+    networks:
+      deep-thought:
+    ports:
+      - "4242:4242"
+
+  question:
+    build: ./question
+    image: deep-thought/question
+    container_name: question
+    environment:
+      <<: *common-env
+    networks:
+      deep-thought:
+    ports:
+      - "1234:1234"
+
+  answer:
+    build: ./answer
+    image: deep-thought/answer
+    container_name: answer
+    environment:
+      <<: *common-env
+    networks:
+      deep-thought:
+    ports:
+      - "5678:5678"
+
+networks:
+  deep-thought:

@@ -1,0 +1,10 @@
+go 1.19
+
+use (
+    ./0-deep-thought-uninstrumented/frontend
+    ./0-deep-thought-uninstrumented/question
+    ./0-deep-thought-uninstrumented/answer
+    ./1-deep-thought-instrumented/frontend
+    ./1-deep-thought-instrumented/question
+    ./1-deep-thought-instrumented/answer
+)
