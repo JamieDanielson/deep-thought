@@ -4,15 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
 )
 
 func determineQuestion() string {
-	questions := []string{
-		"what is the answer to the ultimate question of life, the universe, and everything?", "what is 6 * 7?",
-	}
-	return questions[rand.Intn(len(questions))]
+	return "what is the answer to the ultimate question of life, the universe, and everything?"
 }
 
 func questionHandler(w http.ResponseWriter, r *http.Request) {

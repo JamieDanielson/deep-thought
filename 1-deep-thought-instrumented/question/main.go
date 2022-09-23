@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -32,16 +31,13 @@ func newTraceProvider(exp *otlptrace.Exporter) *sdktrace.TracerProvider {
 }
 
 func determineQuestion() string {
-	questions := []string{
-		"what is the answer to the ultimate question of life, the universe, and everything?", "what is 6 * 7?",
-	}
-	return questions[rand.Intn(len(questions))]
+	return "what is the answer to the ultimate question of life, the universe, and everything?"
 }
 
 func questionHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	question := func(ctx context.Context) string {
-		_, span := tracer.Start(ctx, "✨ pick a question ✨")
+		_, span := tracer.Start(ctx, "✨ pondering the question ✨")
 		defer span.End()
 		return determineQuestion()
 	}(ctx)
