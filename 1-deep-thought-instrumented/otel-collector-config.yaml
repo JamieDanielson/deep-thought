@@ -10,10 +10,6 @@ processors:
 exporters:
   logging:
     loglevel: debug
-  jaeger:
-    endpoint: jaeger-all-in-one:14250
-    tls:
-      insecure: true
   otlp/hny:
     endpoint: api.honeycomb.io:443
     headers:
