@@ -18,8 +18,8 @@ func getEnv(key, fallback string) string {
 }
 
 var (
-	questionServiceUrl = getEnv("QUESTION_ENDPOINT", "http://localhost:1234") + "/question"
-	answerServiceUrl   = getEnv("ANSWER_ENDPOINT", "http://localhost:5678") + "/answer"
+	questionserviceUrl = getEnv("QUESTION_ENDPOINT", "http://localhost:1234") + "/questionservice"
+	answerserviceUrl   = getEnv("ANSWER_ENDPOINT", "http://localhost:5678") + "/answerservice"
 )
 
 func main() {
@@ -40,11 +40,11 @@ func main() {
 }
 
 func getQuestion(ctx context.Context) string {
-	return makeRequest(ctx, questionServiceUrl)
+	return makeRequest(ctx, questionserviceUrl)
 }
 
 func getAnswer(ctx context.Context) string {
-	return makeRequest(ctx, answerServiceUrl)
+	return makeRequest(ctx, answerserviceUrl)
 }
 
 func makeRequest(ctx context.Context, url string) string {

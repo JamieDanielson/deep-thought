@@ -29,17 +29,19 @@ func getEnv(key, fallback string) string {
 }
 
 var (
-	questionServiceUrl = getEnv("QUESTION_ENDPOINT", "http://localhost:1234") + "/question"
-	answerServiceUrl   = getEnv("ANSWER_ENDPOINT", "http://localhost:5678") + "/answer"
+	questionserviceUrl = getEnv("QUESTION_ENDPOINT", "http://localhost:1234") + "/questionservice"
+	answerserviceUrl   = getEnv("ANSWER_ENDPOINT", "http://localhost:5678") + "/answerservice"
 	tracer             trace.Tracer
 )
 
+// set up an OTLP Trace Exporter
 func newExporter(ctx context.Context) (*otlptrace.Exporter, error) {
 	client := otlptracegrpc.NewClient()
 	return otlptrace.New(ctx, client)
 }
 
-func newTraceProvider(exp *otlptrace.Exporter) *sdktrace.TracerProvider {
+// set up a Tracer Provider
+func newTracerProvider(exp *otlptrace.Exporter) *sdktrace.TracerProvider {
 	return sdktrace.NewTracerProvider(
 		sdktrace.WithBatcher(exp),
 	)
@@ -54,12 +56,10 @@ func main() {
 	}
 
 	// Create a new tracer provider with a batch span processor and the given exporter.
-	tp := newTraceProvider(exp)
+	tp := newTracerProvider(exp)
 
 	// Handle this error in a sensible manner where possible
 	defer func() { _ = tp.Shutdown(ctx) }()
-
-	otel.SetTracerProvider(tp)
 
 	// Set the Tracer Provider and the W3C Trace Context propagator as globals.
 	// Important, otherwise this won't let you see distributed traces be connected!
@@ -68,7 +68,7 @@ func main() {
 		propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}),
 	)
 
-	tracer = tp.Tracer("deep-thought/frontend")
+	tracer = tp.Tracer("deep-thought/gatewayservice")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -87,17 +87,17 @@ func main() {
 
 func getQuestion(ctx context.Context) string {
 	var getQuestionSpan trace.Span
-	ctx, getQuestionSpan = tracer.Start(ctx, "✨ call /question ✨")
+	ctx, getQuestionSpan = tracer.Start(ctx, "✨ call /questionservice ✨")
 	defer getQuestionSpan.End()
-	return makeRequest(ctx, questionServiceUrl)
+	return makeRequest(ctx, questionserviceUrl)
 }
 
 func getAnswer(ctx context.Context) string {
 	var getAnswerSpan trace.Span
-	ctx, getAnswerSpan = tracer.Start(ctx, "✨ call /answer ✨")
+	ctx, getAnswerSpan = tracer.Start(ctx, "✨ call /answerservice ✨")
 	getAnswerSpan.SetAttributes(attribute.String("important_note", "don't panic"))
 	defer getAnswerSpan.End()
-	return makeRequest(ctx, answerServiceUrl)
+	return makeRequest(ctx, answerserviceUrl)
 }
 
 func makeRequest(ctx context.Context, url string) string {

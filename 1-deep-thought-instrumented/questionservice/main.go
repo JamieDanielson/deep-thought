@@ -19,11 +19,13 @@ var (
 	tracer trace.Tracer
 )
 
+// set up an OTLP Trace Exporter
 func newExporter(ctx context.Context) (*otlptrace.Exporter, error) {
 	client := otlptracegrpc.NewClient()
 	return otlptrace.New(ctx, client)
 }
 
+// set up a Tracer Provider
 func newTraceProvider(exp *otlptrace.Exporter) *sdktrace.TracerProvider {
 	return sdktrace.NewTracerProvider(
 		sdktrace.WithBatcher(exp),
@@ -55,24 +57,26 @@ func main() {
 		log.Fatalf("failed to initialize exporter: %v", err)
 	}
 
+  // Create a new tracer provider with a batch span processor and the given exporter.
 	tp := newTraceProvider(exp)
 
+	// Handle this error in a sensible manner where possible
 	defer func() { _ = tp.Shutdown(ctx) }()
 
+	// Set the Tracer Provider and the W3C Trace Context propagator as globals.
+	// Important, otherwise this won't let you see distributed traces be connected!
 	otel.SetTracerProvider(tp)
 	otel.SetTextMapPropagator(
 		propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}),
 	)
 
-	otel.SetTracerProvider(tp)
-
-	tracer = tp.Tracer("deep-thought/question")
+	tracer = tp.Tracer("deep-thought/questionservice")
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/question", questionHandler)
+	mux.HandleFunc("/questionservice", questionHandler)
 
-	wrappedHandler := otelhttp.NewHandler(mux, "question")
+	wrappedHandler := otelhttp.NewHandler(mux, "questionservice")
 
-	log.Println("Listening on http://localhost:1234/question")
+	log.Println("Listening on http://localhost:1234/questionservice")
 	log.Fatal(http.ListenAndServe(":1234", wrappedHandler))
 }

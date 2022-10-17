@@ -1,8 +1,8 @@
 version: '3.0'
 
 x-common-env: &common-env
-  QUESTION_ENDPOINT: http://question:1234
-  ANSWER_ENDPOINT: http://answer:5678
+  QUESTION_ENDPOINT: http://questionservice:1234
+  ANSWER_ENDPOINT: http://answerservice:5678
 
 services:
   opentelemetry-collector:
@@ -18,40 +18,40 @@ services:
     ports:
       - "4317:4317"
 
-  frontend:
-    build: ./frontend
-    image: deep-thought/frontend
-    container_name: frontend
+  gatewayservice:
+    build: ./gatewayservice
+    image: deep-thought/gatewayservice
+    container_name: gatewayservice
     environment:
       <<: *common-env
       OTEL_EXPORTER_OTLP_ENDPOINT: http://opentelemetry-collector:4317
-      OTEL_SERVICE_NAME: frontend
+      OTEL_SERVICE_NAME: gatewayservice
     networks:
       deep-thought:
     ports:
       - "4242:4242"
 
-  question:
-    build: ./question
-    image: deep-thought/question
-    container_name: question
+  questionservice:
+    build: ./questionservice
+    image: deep-thought/questionservice
+    container_name: questionservice
     environment:
       <<: *common-env
       OTEL_EXPORTER_OTLP_ENDPOINT: http://opentelemetry-collector:4317
-      OTEL_SERVICE_NAME: question
+      OTEL_SERVICE_NAME: questionservice
     networks:
       deep-thought:
     ports:
       - "1234:1234"
 
-  answer:
-    build: ./answer
-    image: deep-thought/answer
-    container_name: answer
+  answerservice:
+    build: ./answerservice
+    image: deep-thought/answerservice
+    container_name: answerservice
     environment:
       <<: *common-env
       OTEL_EXPORTER_OTLP_ENDPOINT: http://opentelemetry-collector:4317
-      OTEL_SERVICE_NAME: answer
+      OTEL_SERVICE_NAME: answerservice
     networks:
       deep-thought:
     ports:
