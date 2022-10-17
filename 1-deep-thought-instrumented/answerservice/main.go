@@ -7,7 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
-	"time"
+	// "time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
@@ -42,9 +42,8 @@ func provideAnswer(ctx context.Context) string {
 	// this is a slow computation!
 	for {
 		min := 1
-		max := 100000
+		max := 1000000
 		answer := strconv.Itoa((rand.Intn(max-min) + min))
-		trace.SpanFromContext(ctx).AddEvent(answer)
 		if answer == "42" {
 			return answer
 		}
@@ -54,9 +53,9 @@ func provideAnswer(ctx context.Context) string {
 func answerHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	answer := func(ctx context.Context) string {
-		_, span := tracer.Start(ctx, "✨ thinking about the answer ✨")
-		time.Sleep(1 * time.Second)
-		defer span.End()
+		// _, span := tracer.Start(ctx, "✨ thinking about the answer ✨")
+		// time.Sleep(1 * time.Second)
+		// defer span.End()
 		return provideAnswer(ctx)
 	}(ctx)
 

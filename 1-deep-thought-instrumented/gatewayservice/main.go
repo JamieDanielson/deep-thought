@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	// "time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
@@ -16,7 +17,7 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
 
-	"go.opentelemetry.io/otel/attribute"
+	// "go.opentelemetry.io/otel/attribute"
 
 )
 
@@ -86,17 +87,19 @@ func main() {
 }
 
 func getQuestion(ctx context.Context) string {
-	var getQuestionSpan trace.Span
-	ctx, getQuestionSpan = tracer.Start(ctx, "✨ call /questionservice ✨")
-	defer getQuestionSpan.End()
+	// var getQuestionSpan trace.Span
+	// ctx, getQuestionSpan = tracer.Start(ctx, "✨ call /questionservice ✨")
+	// time.Sleep(1 * time.Second)
+	// defer getQuestionSpan.End()
 	return makeRequest(ctx, questionserviceUrl)
 }
 
 func getAnswer(ctx context.Context) string {
-	var getAnswerSpan trace.Span
-	ctx, getAnswerSpan = tracer.Start(ctx, "✨ call /answerservice ✨")
-	getAnswerSpan.SetAttributes(attribute.String("important_note", "don't panic"))
-	defer getAnswerSpan.End()
+	// var getAnswerSpan trace.Span
+	// ctx, getAnswerSpan = tracer.Start(ctx, "✨ call /answerservice ✨")
+	// time.Sleep(1 * time.Second)
+	// getAnswerSpan.SetAttributes(attribute.String("important_note", "don't panic"))
+	// defer getAnswerSpan.End()
 	return makeRequest(ctx, answerserviceUrl)
 }
 
