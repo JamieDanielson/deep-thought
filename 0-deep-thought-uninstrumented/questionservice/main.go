@@ -24,10 +24,10 @@ func questionHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/question", questionHandler)
+	mux.HandleFunc("/questionservice", questionHandler)
 
 	wrappedHandler := http.Handler(mux)
 
-	log.Println("Listening on http://localhost:1234/question")
+	log.Println("Listening on http://localhost:1234/questionservice")
 	log.Fatal(http.ListenAndServe(":1234", wrappedHandler))
 }

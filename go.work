@@ -1,10 +1,10 @@
 go 1.19
 
 use (
-    ./0-deep-thought-uninstrumented/frontend
-    ./0-deep-thought-uninstrumented/question
-    ./0-deep-thought-uninstrumented/answer
-    ./1-deep-thought-instrumented/frontend
-    ./1-deep-thought-instrumented/question
-    ./1-deep-thought-instrumented/answer
+    ./0-deep-thought-uninstrumented/gatewayservice
+    ./0-deep-thought-uninstrumented/questionservice
+    ./0-deep-thought-uninstrumented/answerservice
+    ./1-deep-thought-instrumented/gatewayservice
+    ./1-deep-thought-instrumented/questionservice
+    ./1-deep-thought-instrumented/answerservice
 )
