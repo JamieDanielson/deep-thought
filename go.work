@@ -7,4 +7,7 @@ use (
     ./1-deep-thought-instrumented/gatewayservice
     ./1-deep-thought-instrumented/questionservice
     ./1-deep-thought-instrumented/answerservice
+    ./2-deep-thought-instrumented-manual/gatewayservice
+    ./2-deep-thought-instrumented-manual/questionservice
+    ./2-deep-thought-instrumented-manual/answerservice
 )

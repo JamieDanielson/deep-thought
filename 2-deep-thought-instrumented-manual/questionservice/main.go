@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
@@ -39,6 +40,12 @@ func determineQuestion() string {
 func questionHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	question := func(ctx context.Context) string {
+
+		// let's add a manual span!
+		_, span := tracer.Start(ctx, "✨ pondering the question ✨")
+		time.Sleep(1 * time.Second)
+		defer span.End()
+
 		return determineQuestion()
 	}(ctx)
 
