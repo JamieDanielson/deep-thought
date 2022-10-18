@@ -26,7 +26,7 @@ what is the answer to the ultimate question of life, the universe, and everythin
 42
 ```
 
-![deep thought instrumented http requests](./1-deep-thought-instrumented.png)
+![deep thought instrumented http requests](/1-deep-thought-instrumented.png)
 
 ## instrumented app with auto and manual instrumentation
 
@@ -43,4 +43,4 @@ what is the answer to the ultimate question of life, the universe, and everythin
 42
 ```
 
-![deep thought instrumented http requests and manual instrumentation](./2-deep-thought-instrumented-manual.png)
+![deep thought instrumented http requests and manual instrumentation](/2-deep-thought-instrumented-manual.png)
