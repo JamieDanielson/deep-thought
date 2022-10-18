@@ -4,7 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
+	"time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
@@ -32,17 +35,32 @@ func newTraceProvider(exp *otlptrace.Exporter) *sdktrace.TracerProvider {
 	)
 }
 
-func determineQuestion() string {
-	return "what is the answer to the ultimate question of life, the universe, and everything?"
+func provideAnswer(ctx context.Context) string {
+
+	// this is a slow computation!
+	for {
+		min := 1
+		max := 1000000
+		answer := strconv.Itoa((rand.Intn(max-min) + min))
+		if answer == "42" {
+			return answer
+		}
+	}
 }
 
-func questionHandler(w http.ResponseWriter, r *http.Request) {
+func answerHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	question := func(ctx context.Context) string {
-		return determineQuestion()
+	answer := func(ctx context.Context) string {
+
+		// let's add a manual span!
+		_, span := tracer.Start(ctx, "✨ thinking about the answer ✨")
+		time.Sleep(1 * time.Second)
+		defer span.End()
+
+		return provideAnswer(ctx)
 	}(ctx)
 
-	_, _ = fmt.Fprintf(w, "%v", question)
+	_, _ = fmt.Fprintf(w, "%s", answer)
 
 }
 
@@ -55,7 +73,7 @@ func main() {
 		log.Fatalf("failed to initialize exporter: %v", err)
 	}
 
-  // Create a new tracer provider with a batch span processor and the given exporter.
+	// Create a new tracer provider with a batch span processor and the given exporter.
 	tp := newTraceProvider(exp)
 
 	// Handle this error in a sensible manner where possible
@@ -68,13 +86,13 @@ func main() {
 		propagation.NewCompositeTextMapPropagator(propagation.TraceContext{}, propagation.Baggage{}),
 	)
 
-	tracer = tp.Tracer("deep-thought/questionservice")
+	tracer = tp.Tracer("deep-thought/answerservice")
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/questionservice", questionHandler)
+	mux.HandleFunc("/answerservice", answerHandler)
 
-	wrappedHandler := otelhttp.NewHandler(mux, "questionservice")
+	wrappedHandler := otelhttp.NewHandler(mux, "answerservice")
 
-	log.Println("Listening on http://localhost:1234/questionservice")
-	log.Fatal(http.ListenAndServe(":1234", wrappedHandler))
+	log.Println("Listening on http://localhost:5678/answerservice")
+	log.Fatal(http.ListenAndServe(":5678", wrappedHandler))
 }

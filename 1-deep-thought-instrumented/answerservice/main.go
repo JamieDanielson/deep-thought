@@ -7,7 +7,6 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
-	// "time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
@@ -16,8 +15,6 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
-
-	// "go.opentelemetry.io/otel/attribute"
 )
 
 var (
@@ -53,9 +50,6 @@ func provideAnswer(ctx context.Context) string {
 func answerHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	answer := func(ctx context.Context) string {
-		// _, span := tracer.Start(ctx, "✨ thinking about the answer ✨")
-		// time.Sleep(1 * time.Second)
-		// defer span.End()
 		return provideAnswer(ctx)
 	}(ctx)
 
