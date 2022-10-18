@@ -2,7 +2,7 @@
 
 ## regular ol' app
 
-![deep thought diagram](static//0-deep-thought-diagram.png)
+![deep thought diagram](./static/0-deep-thought-diagram.png)
 
 `cd 0-deep-thought-uninstrumented/`
 
