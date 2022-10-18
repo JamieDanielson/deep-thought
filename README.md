@@ -2,6 +2,8 @@
 
 ## regular ol' app
 
+![deep thought diagram](/static//0-deep-thought-diagram.png)
+
 `cd 0-deep-thought-uninstrumented/`
 
 `docker-compose up --build`
@@ -13,6 +15,8 @@ what is the answer to the ultimate question of life, the universe, and everythin
 ```
 
 ## instrumented app, with instrumentation for http requests
+
+![deep thought diagram instrumented](/static/1-deep-thought-diagram-instrumented.png)
 
 `cd 1-deep-thought-instrumented/`
 
