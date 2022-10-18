@@ -8,4 +8,4 @@ what is the answer to the ultimate question of life, the universe, and everythin
 42
 ```
 
-![deep thought diagram instrumented](/static/1-deep-thought-diagram-instrumented.png)
+![deep thought diagram instrumented](../static/1-deep-thought-diagram-instrumented.png)
