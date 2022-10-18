@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
@@ -88,6 +89,7 @@ func getQuestion(ctx context.Context) string {
 }
 
 func getAnswer(ctx context.Context) string {
+	time.Sleep(1 * time.Second)
 	return makeRequest(ctx, answerserviceUrl)
 }
 
