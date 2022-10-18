@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func provideAnswer(ctx context.Context) string {
@@ -23,6 +24,7 @@ func provideAnswer(ctx context.Context) string {
 func answerHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	answer := func(ctx context.Context) string {
+		time.Sleep(1 * time.Second)
 		return provideAnswer(ctx)
 	}(ctx)
 

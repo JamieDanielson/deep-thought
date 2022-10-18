@@ -91,7 +91,6 @@ func getQuestion(ctx context.Context) string {
 	// let's add a manual span!
 	var getQuestionSpan trace.Span
 	ctx, getQuestionSpan = tracer.Start(ctx, "✨ call /questionservice ✨")
-	time.Sleep(1 * time.Second)
 	defer getQuestionSpan.End()
 
 	return makeRequest(ctx, questionserviceUrl)

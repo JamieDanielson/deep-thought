@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func getEnv(key, fallback string) string {
@@ -44,6 +45,7 @@ func getQuestion(ctx context.Context) string {
 }
 
 func getAnswer(ctx context.Context) string {
+	time.Sleep(1 * time.Second)
 	return makeRequest(ctx, answerserviceUrl)
 }
 
