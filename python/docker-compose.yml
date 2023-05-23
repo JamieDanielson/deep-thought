@@ -1,0 +1,61 @@
+version: '3.0'
+
+x-common-env: &common-env
+  QUESTION_ENDPOINT: http://question_service:1234
+  ANSWER_ENDPOINT: http://answer_service:5678
+
+services:
+  opentelemetry-collector:
+    image: otel/opentelemetry-collector:0.52.0
+    container_name: opentelemetry-collector
+    environment:
+      HONEYCOMB_API_KEY:
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - "./otel-collector-config.yaml:/etc/otel-collector-config.yaml"
+    networks:
+      deep-thought:
+    ports:
+      - "4317:4317"
+
+  gateway_service:
+    build: ./gateway_service
+    image: deep-thought/gateway_service
+    container_name: gateway_service
+    environment:
+      <<: *common-env
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://opentelemetry-collector:4317
+      OTEL_SERVICE_NAME: gateway_service
+    networks:
+      deep-thought:
+    ports:
+      - "4242:4242"
+
+  question_service:
+    build: ./question_service
+    image: deep-thought/question_service
+    container_name: question_service
+    environment:
+      <<: *common-env
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://opentelemetry-collector:4317
+      OTEL_SERVICE_NAME: question_service
+    networks:
+      deep-thought:
+    ports:
+      - "1234:1234"
+
+  answer_service:
+    build: ./answer_service
+    image: deep-thought/answer_service
+    container_name: answer_service
+    environment:
+      <<: *common-env
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://opentelemetry-collector:4317
+      OTEL_SERVICE_NAME: answer_service
+    networks:
+      deep-thought:
+    ports:
+      - "5678:5678"
+
+networks:
+  deep-thought:

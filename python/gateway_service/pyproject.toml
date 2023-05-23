@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gateway_service"
+version = "0.1.0"
+description = ""
+authors = ["jamie"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.2.2"
+python-dotenv = "^1.0.0"
+honeycomb-opentelemetry = "0.1.2b0"
+opentelemetry-api = "^1.16.0"
+opentelemetry-instrumentation-requests = "0.37b0"
+opentelemetry-instrumentation-flask = "^0.37b0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
